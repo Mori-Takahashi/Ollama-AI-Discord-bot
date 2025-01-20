@@ -1,6 +1,11 @@
 const fs = require('fs');
 const axios = require('axios');
 const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+require('dotenv').config();
+const envGuildId = process.env.DISCORD_GUILD;
+const token = process.env.DISCORD_TOKEN;
+console.log(token);
+console.log(envGuildId);
 
 const client = new Client({
     intents: [
@@ -25,7 +30,7 @@ client.on('ready', () => {
     console.log(`Bot ist eingeloggt als ${client.user.tag}`);
 
     
-    const guildId = ""; // ID der Discord-Gilde
+    const guildId = envGuildId; // ID der Discord-Gilde
     const guild = client.guilds.cache.get(guildId);
     if (!guild) return console.error("Guild nicht gefunden");
 
@@ -167,4 +172,4 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login(""); // Token des Discord-Bots
+client.login(token); // Token des Discord-Bots
