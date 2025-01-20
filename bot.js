@@ -179,4 +179,4 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login(token); // Token des Discord-Bots
+client.login(token);
