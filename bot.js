@@ -4,8 +4,15 @@ const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle,
 require('dotenv').config();
 const envGuildId = process.env.DISCORD_GUILD;
 const token = process.env.DISCORD_TOKEN;
-console.log("Token:", token);
-console.log("Guild ID:" ,envGuildId);
+let debug = true; // Debugging-Modus ACHTUNG der token ist bei true im Klartext sichtbar!!!
+
+if (debug) {
+    console.log("Debugging enabled");
+    console.log("Token:", token);
+    console.log("Guild ID:" ,envGuildId);
+}
+
+console.log("Bot wird gestartet... Drücke Strg+C, um den Bot zu beenden.");
 
 const client = new Client({
     intents: [
