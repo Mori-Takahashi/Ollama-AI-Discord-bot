@@ -23,20 +23,29 @@ const client = new Client({
 });
 
 const chatDataFile = './chatData.json';
+const bannedUsersFile = './bannedUsers.json';
 
 let chatData = {};
 if (fs.existsSync(chatDataFile)) {
     chatData = JSON.parse(fs.readFileSync(chatDataFile));
 }
 
+let bannedUsers = {};
+if (fs.existsSync(bannedUsersFile)) {
+    bannedUsers = JSON.parse(fs.readFileSync(bannedUsersFile));
+}
+
 function saveChatData() {
     fs.writeFileSync(chatDataFile, JSON.stringify(chatData, null, 2));
+}
+
+function saveBannedUsers() {
+    fs.writeFileSync(bannedUsersFile, JSON.stringify(bannedUsers, null, 2));
 }
 
 client.on('ready', () => {
     console.log(`Bot ist eingeloggt als ${client.user.tag}`);
 
-    
     const guildId = envGuildId; // ID der Discord-Gilde
     const guild = client.guilds.cache.get(guildId);
     if (!guild) return console.error("Guild nicht gefunden");
@@ -129,9 +138,14 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.on('messageCreate', async (message) => {
-    if (message.mentions.has(client.user)) {
-        const userId = message.author.id;
+    const userId = message.author.id;
 
+    if (bannedUsers[userId]) {
+        message.reply("Du wurdest leider gesperrt und ich kann auf keine Antworten mehr für dich generieren.");
+        return;
+    }
+
+    if (message.mentions.has(client.user)) {
         if (!chatData[userId]) {
             chatData[userId] = { history: [], personality: '' };
             saveChatData();
@@ -179,4 +193,32 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login(token); // Token des Discord-Bots
+process.stdin.on('data', (input) => {
+    const command = input.toString().trim();
+
+    if (command === 'k') {
+        console.log('Bot wird beendet...');
+        process.exit();
+    } else if (command === 'r') {
+        console.log('Bot wird neu gestartet...');
+        process.exit(1); // Neustart durch externe Überwachungs-Tools
+    } else if (command === 'b') {
+        console.log('Bitte die Discord-User-ID eingeben, die gebannt werden soll:');
+        process.stdin.once('data', (idInput) => {
+            const userId = idInput.toString().trim();
+            bannedUsers[userId] = true;
+            saveBannedUsers();
+
+            const user = client.users.cache.get(userId);
+            if (user) {
+                user.send('Du wurdest gesperrt und kannst nicht mehr mit dem Bot chatten.').catch(console.error);
+            }
+
+            console.log(`Benutzer ${userId} wurde gesperrt.`);
+        });
+    } else {
+        console.log('Unbekannter Befehl. Verfügbare Befehle: k (Kill), r (Restart), b (Bannen)');
+    }
+});
+
+client.login(token);
