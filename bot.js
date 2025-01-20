@@ -4,8 +4,8 @@ const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle,
 require('dotenv').config();
 const envGuildId = process.env.DISCORD_GUILD;
 const token = process.env.DISCORD_TOKEN;
-console.log(token);
-console.log(envGuildId);
+console.log("Token:", token);
+console.log("Guild ID:" ,envGuildId);
 
 const client = new Client({
     intents: [

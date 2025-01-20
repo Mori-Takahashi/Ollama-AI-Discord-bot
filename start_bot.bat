@@ -34,14 +34,25 @@ if not exist ".env" (
     echo Guild ID can be found by right-clicking on your server icon and selecting "Copy ID"
 
     :: Ask for Bot Token
+    :askToken
     set /p DISCORD_TOKEN="Please enter your bot token: "
+    if "%DISCORD_TOKEN%"=="" (
+        echo Bot token cannot be empty. Please try again.
+        goto askToken
+    )
 
     :: Ask for Guild ID
+    :askGuild
     set /p DISCORD_GUILD="Please enter your guild ID: "
+    if "%DISCORD_GUILD%"=="" (
+        echo Guild ID cannot be empty. Please try again.
+        goto askGuild
+    )
 
     :: Create .env file
-    echo DISCORD_TOKEN=%DISCORD_TOKEN%> .env
-    echo DISCORD_GUILD=%DISCORD_GUILD%>> .env
+    echo Writing to .env file...
+    (echo DISCORD_TOKEN=%DISCORD_TOKEN%) > .env
+    (echo DISCORD_GUILD=%DISCORD_GUILD%) >> .env
     echo .env file has been created.
 ) else (
     echo .env file already exists.
