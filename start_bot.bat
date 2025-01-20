@@ -17,18 +17,10 @@ if not exist "package.json" (
 
 :: Check if node_modules exists
 if not exist "node_modules" (
-    echo Dependencies are not installed.
-    set /p INSTALL_DEPS="Do you want to install the dependencies? (y/n): "
-    if /i "%INSTALL_DEPS%"=="y" (
-        echo Installing dependencies...
-        npm install
-        if %errorlevel% neq 0 (
-            echo Failed to install dependencies.
-            pause
-            exit /b
-        )
-    ) else (
-        echo Dependencies must be installed to proceed.
+    echo Dependencies are not installed. Installing dependencies automatically...
+    npm install
+    if %errorlevel% neq 0 (
+        echo Failed to install dependencies.
         pause
         exit /b
     )
