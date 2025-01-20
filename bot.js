@@ -25,7 +25,7 @@ client.on('ready', () => {
     console.log(`Bot ist eingeloggt als ${client.user.tag}`);
 
     
-    const guildId = "475637563911176194";
+    const guildId = ""; // ID der Discord-Gilde
     const guild = client.guilds.cache.get(guildId);
     if (!guild) return console.error("Guild nicht gefunden");
 
@@ -167,4 +167,4 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login("");
+client.login(""); // Token des Discord-Bots
