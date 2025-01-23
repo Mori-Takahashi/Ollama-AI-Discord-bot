@@ -1,4 +1,6 @@
-# KI-Scripte
+# ACHTUNG: Der Bot ist noch in entwicklung und hat noch einige Fehler!
+
+# KI-Discordbot
 
 Dies ist ein Discord-Bot-Projekt, das verschiedene Funktionen bietet, einschließlich der Verwaltung von Chatverläufen und der Anpassung der Bot-Persönlichkeit.
 
